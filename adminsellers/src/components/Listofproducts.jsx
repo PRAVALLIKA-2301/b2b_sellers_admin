@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Card, Col, Row, Button, FloatButton, Input, Form, Select } from "antd";
 import "./Listofproducts.css";
+import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 
-const Listofproducts = ({ seller }) => {
+const Listofproducts = () => {
+  const location = useLocation();
+  const seller = location.state?.seller;
+
   const initialProducts = [
     {
       productImg:

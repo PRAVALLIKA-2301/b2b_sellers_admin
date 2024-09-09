@@ -3,15 +3,13 @@ import "../components/List_of_sellers.css";
 import { IoArrowDownOutline } from "react-icons/io5";
 import { IoMdArrowUp } from "react-icons/io";
 import { Button } from "antd";
-import Listofproducts from "./Listofproducts"; // Import Listofproducts component
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const List_of_sellers = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  // sorting and filtering
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("ascend");
-  const [selectedSeller, setSelectedSeller] = useState(null); // State to track selected seller
-  const [showProducts, setShowProducts] = useState(false); // State to toggle product view
   const admin_seller_data = [
     {
       Sno: 1,
@@ -60,7 +58,7 @@ const List_of_sellers = () => {
       }
     });
 
-  const handleSortToggle = () => {
+  const handleSort = () => {
     setSortOrder((prevSortOrder) =>
       prevSortOrder === "ascend" ? "descend" : "ascend"
     );
@@ -68,76 +66,57 @@ const List_of_sellers = () => {
 
   // When "View" is clicked, show Listofproducts component
   const handleViewClick = (seller) => {
-    setSelectedSeller(seller); // Set the selected seller data
-    setShowProducts(true); // Show the product page
-    // navigate("/");
+    navigate("/products", { state: { seller } });
   };
 
   return (
     <div className="seller-cont">
-      {/* Show Listofproducts component if "View" is clicked */}
-      {showProducts ? (
-        <Listofproducts seller={selectedSeller} />
-      ) : (
-        <>
-          <div className="seller-navbar">
-            <h1>b2b</h1>
-            <p>log out</p>
-          </div>
-          <div className="table--optns">
-            <div className="table--optns1">
-              <p>Sellers</p>
-              <Button className="sort-button" onClick={handleSortToggle}>
-                {sortOrder === "ascend" ? (
-                  <IoMdArrowUp />
-                ) : (
-                  <IoArrowDownOutline />
-                )}
-              </Button>
-            </div>
+      <div className="seller-navbar">
+        <h1>b2b</h1>
+        <p>log out</p>
+      </div>
+      <div className="table--optns">
+        <div className="table--optns1">
+          <p>Sellers</p>
+          <Button className="sort-button" onClick={handleSort}>
+            {sortOrder === "ascend" ? <IoMdArrowUp /> : <IoArrowDownOutline />}
+          </Button>
+        </div>
 
-            <input
-              type="text"
-              placeholder="Search Seller"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-          </div>
-          <div className="seller-table-cont">
-            <table className="seller-table">
-              <thead>
-                <tr>
-                  <td>Name</td>
-                  <td>GST No</td>
-                  <td>PAN</td>
-                  <td>Phone number</td>
-                  <td>View</td>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredtableData.length > 0 ? (
-                  filteredtableData.map((e, index) => (
-                    <tr key={index}>
-                      <td>{e.Name}</td>
-                      <td>{e.GST_No}</td>
-                      <td>{e.PAN}</td>
-                      <td>{e.Phone_number}</td>
-                      <td>
-                        <Button onClick={() => handleViewClick(e)}>View</Button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5">No results found</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
+        <input
+          type="text"
+          placeholder="Search Seller"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      <div className="seller-table-cont">
+        <table className="seller-table">
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>GST No</td>
+              <td>PAN</td>
+              <td>Phone number</td>
+              <td>View</td>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredtableData.map((e, index) => (
+              <tr key={index}>
+                <td>{e.Name}</td>
+                <td>{e.GST_No}</td>
+                <td>{e.PAN}</td>
+                <td>{e.Phone_number}</td>
+                <td>
+                  <Button onClick={() => handleViewClick(e)}>View</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
