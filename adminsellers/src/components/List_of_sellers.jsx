@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import "../components/List_of_sellers.css";
 import { IoArrowDownOutline } from "react-icons/io5";
 import { IoMdArrowUp } from "react-icons/io";
+import { DownloadOutlined } from "@ant-design/icons";
+
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 const List_of_sellers = () => {
   const navigate = useNavigate();
@@ -48,6 +51,52 @@ const List_of_sellers = () => {
     },
   ];
 
+  //download excel
+  const exportToExcel = () => {
+    // Format the data for Excel export
+    const formattedData = filteredtableData.map((item) => ({
+      Name: item.Name,
+      "GST No": item.GST_No,
+      PAN: item.PAN,
+      "Phone Number": item.Phone_number,
+      // View: item.status,
+      // "Shipping Address": item.shippingAddress,
+    }));
+
+    // Create a worksheet from the formatted data
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+
+    // Set uniform column widths
+    const wscols = [
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 25 },
+      { wch: 12 },
+      { wch: 17 },
+      { wch: 50 },
+    ];
+    worksheet["!cols"] = wscols;
+
+    // Create a new workbook and add the worksheet to it
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sellers Details");
+
+    // Append current date and time to the filename
+    const now = new Date();
+    const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(now.getDate()).padStart(2, "0")}`;
+    const time = `${String(now.getHours()).padStart(2, "0")}-${String(
+      now.getMinutes()
+    ).padStart(2, "0")}-${String(now.getSeconds()).padStart(2, "0")}`;
+    const timestamp = `${date}_${time}`;
+    const filename = `Sellers_Report_${timestamp}.xlsx`;
+
+    // Write the file
+    XLSX.writeFile(workbook, filename);
+  };
+  // ------------------------------------------------------------------------------
   const filteredtableData = admin_seller_data
     .filter((e) => e.Name.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
@@ -82,24 +131,30 @@ const List_of_sellers = () => {
             {sortOrder === "ascend" ? <IoMdArrowUp /> : <IoArrowDownOutline />}
           </Button>
         </div>
-
-        <input
-          type="text"
-          placeholder="Search Seller"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
+        <div className="table--optns2">
+          <input
+            type="text"
+            placeholder="Search Seller"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <Button
+            icon={<DownloadOutlined />}
+            className="excel-download-button"
+            onClick={exportToExcel}
+          ></Button>
+        </div>
       </div>
       <div className="seller-table-cont">
         <table className="seller-table">
           <thead>
             <tr>
-              <td>Name</td>
-              <td>GST No</td>
-              <td>PAN</td>
-              <td>Phone number</td>
-              <td>View</td>
+              <th>Name</th>
+              <th>GST No</th>
+              <th>PAN</th>
+              <th>Phone number</th>
+              <th>View Products</th>
             </tr>
           </thead>
           <tbody>
@@ -109,7 +164,12 @@ const List_of_sellers = () => {
                 <td>{e.GST_No}</td>
                 <td>{e.PAN}</td>
                 <td>{e.Phone_number}</td>
-                <td>
+                <td
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <Button onClick={() => handleViewClick(e)}>View</Button>
                 </td>
               </tr>

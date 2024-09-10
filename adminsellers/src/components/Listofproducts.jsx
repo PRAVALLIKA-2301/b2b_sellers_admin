@@ -99,7 +99,7 @@ const Listofproducts = () => {
                 <Button key="approve" type="primary">
                   Approve
                 </Button>,
-                <Button key="decline" type="danger">
+                <Button key="decline" danger>
                   Decline
                 </Button>,
                 <Button key="edit" onClick={() => handleEdit(index)}>
