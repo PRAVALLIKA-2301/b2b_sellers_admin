@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Listofproducts />} />
-          <Route path="/sellers" element={<Listofsellers />} />
+          <Route path="/sellers" element={<Listofproducts />} />
+          <Route path="/" element={<Listofsellers />} />
         </Routes>
       </Router>
     </div>

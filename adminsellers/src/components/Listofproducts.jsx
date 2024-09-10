@@ -5,6 +5,7 @@ import './Listofproducts.css';
 const { Option } = Select;
 
 const Listofproducts = () => {
+    
   const initialProducts = [
     {
       productImg: 'https://res.cloudinary.com/drqiw6wyl/image/upload/v1725859683/toordal_tedikn.jpg',
@@ -83,7 +84,7 @@ const Listofproducts = () => {
               }
               actions={[
                 <Button key="approve" type="primary">Approve</Button>,
-                <Button key="decline" type="danger">Decline</Button>,
+                <Button key="decline" danger>Decline</Button>,
                 <Button key="edit" onClick={() => handleEdit(index)}>Edit</Button>,
               ]}
             >
@@ -145,7 +146,7 @@ const Listofproducts = () => {
                                 </Form.Item>
                               </Col>
                               <Col span={4}>
-                                <Button onClick={() => remove(name)} type="danger">Remove</Button>
+                                <Button onClick={() => remove(name)} danger>Remove</Button>
                               </Col>
                             </Row>
                           ))}
