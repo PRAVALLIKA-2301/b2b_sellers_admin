@@ -82,9 +82,8 @@
   padding: 3px;
   height: 25px;
 }
-.excel-download-button {
-}
-@media (max-width: 570px) {
+
+@media (max-width: 768px) {
   .seller-navbar h1 {
     font-size: 1.5rem;
   }

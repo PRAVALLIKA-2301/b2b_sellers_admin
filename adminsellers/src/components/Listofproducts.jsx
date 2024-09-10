@@ -2,12 +2,26 @@ import React, { useState } from "react";
 import { Card, Col, Row, Button, FloatButton, Input, Form, Select } from "antd";
 import "./Listofproducts.css";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const { Option } = Select;
 
 const Listofproducts = () => {
   const location = useLocation();
   const seller = location.state?.seller;
+  const [data, setData] = useState(false);
+
+  const handlefectch = async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}seller/getProductsBySellerId`,
+        { customerId: seller.customerId }
+      );
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const initialProducts = [
     {
