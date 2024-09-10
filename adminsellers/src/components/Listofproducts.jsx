@@ -13,8 +13,8 @@ const Listofproducts = () => {
   const [data, setData] = useState([]);
   const customerId= seller.customerId
   console.log(customerId);
-  const [token,settoken]=useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1YmJ1ZHVzYW5hcHVkaUBnbWFpbC5jb20iLCJpYXQiOjE3MjU5NjcyNDksImV4cCI6MTcyNjA1MzY0OX0.p15u_bW53HZMCIAzMYqJYDtFpo_3MJ1Y7lh906mrdpU")
-  
+  const [token,settoken]=useState("")
+  settoken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1YmJ1ZHVzYW5hcHVkaUBnbWFpbC5jb20iLCJpYXQiOjE3MjU5NjcyNDksImV4cCI6MTcyNjA1MzY0OX0.p15u_bW53HZMCIAzMYqJYDtFpo_3MJ1Y7lh906mrdpU")
 
   const handleFetch = async () => {
     try {
@@ -30,7 +30,7 @@ const Listofproducts = () => {
 
   useEffect(() => {
       handleFetch(); // Fetch data when component mounts or seller.customerId changes
-  }, []);
+  }, [data]);
 
 
 console.log("Prducts for Seller : ",data);
