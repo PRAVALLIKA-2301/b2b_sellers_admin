@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Card, Col, Row, Button, FloatButton, Input, Form, Select, message } from "antd";
+import { Card, Col, Row, Button,Modal, FloatButton, Input, Form, Select, message } from "antd";
 import "./Listofproducts.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -134,7 +134,17 @@ console.log("Prducts for Seller : ",data);
       // Optionally show an error message to the user
     }
   };
-  
+  const [productToDelete, setProductToDelete] = useState(null);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showDeleteConfirm = (productID) => {
+    setProductToDelete(productID);
+    setIsModalVisible(true);
+  };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setProductToDelete(null);
+  };
 
   return (
     <>
@@ -162,7 +172,11 @@ console.log("Prducts for Seller : ",data);
                 <Button key="approve" type="primary">
                   Approve
                 </Button>,
-                <Button key="decline" danger onClick={() => handleDelete(product.productId)}>
+                <Button
+                  key="decline"
+                  danger
+                  onClick={() => showDeleteConfirm(product.productId)} // Show confirmation modal
+                >
                   Decline
                 </Button>,
                 <Button key="edit" onClick={() => handleEdit(index)}>
@@ -307,6 +321,16 @@ console.log("Prducts for Seller : ",data);
         ))}
         <FloatButton.BackTop style={{ marginBottom: "40px" }} />
       </Row>
+      <Modal
+        title="Confirm Deletion"
+        visible={isModalVisible}
+        onOk={handleDelete}
+        onCancel={handleCancel}
+        okText="Yes, Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this product?</p>
+      </Modal>
     </>
   );
 };
