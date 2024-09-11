@@ -3,7 +3,7 @@ import { Card, Col, Row, Button,Modal, FloatButton, Input, Form, Select, message
 import "./Listofproducts.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-
+import {InfoCircleTwoTone } from '@ant-design/icons';
 const { Option } = Select;
 
 const Listofproducts = () => {
@@ -321,9 +321,9 @@ console.log("Prducts for Seller : ",data);
         <FloatButton.BackTop style={{ marginBottom: "40px" }} />
       </Row>
       <Modal
-        title="Confirm Deletion"
+        title={<span><InfoCircleTwoTone /> Confirm Deletion</span>}
         visible={isModalVisible}
-        onOk={handleDelete}
+        onOk={()=>handleDelete(productToDelete)}
         onCancel={handleCancel}
         okText="Yes, Delete"
         cancelText="Cancel"
